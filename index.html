@@ -246,6 +246,45 @@
             animation-delay: 4s;
         }
 
+        /* Down Arrow */
+        .down-arrow {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color), var(--accent-color));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            z-index: 999;
+            cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .down-arrow:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
         /* Main Portfolio (Initially Hidden) */
         .portfolio-content {
             display: none;
@@ -381,6 +420,25 @@
             z-index: 0;
         }
 
+        .hero-image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            animation: dangle 3s ease-in-out infinite;
+            transform-origin: top center;
+        }
+
+        @keyframes dangle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
         .floating-shapes {
             position: absolute;
             width: 100%;
@@ -437,6 +495,19 @@
             border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow-lg);
+            animation: dangle 4s ease-in-out infinite;
+            transform-origin: top center;
+        }
+
+        .about-image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color), var(--primary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
         }
 
         .about-text h3 {
@@ -731,11 +802,17 @@
             visibility: hidden;
             transition: var(--transition);
             z-index: 999;
+            cursor: pointer;
         }
 
         .back-to-top.active {
             opacity: 1;
             visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Responsive Styles */
@@ -892,6 +969,10 @@
             <div class="landing-shape landing-shape-2"></div>
             <div class="landing-shape landing-shape-3"></div>
         </div>
+        <!-- Down Arrow -->
+        <div class="down-arrow" id="downArrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
 
     <!-- Main Portfolio Content -->
@@ -926,11 +1007,11 @@
                     <h1><span class="animated-name">Nwagboso Daniel</span></h1>
                     <p>I create elegant digital experiences using React, JavaScript, and Node.js, combined with professional design skills in Canva, Corel Draw, Adobe Illustrator, and video editing.</p>
                     <div class="hero-btns">
-                        <a href="#projects" class="btn">
+                        <a href="#projects" class="btn view-work-btn">
                             <i class="fas fa-rocket"></i>
                             View My Work
                         </a>
-                        <a href="#contact" class="btn btn-outline">
+                        <a href="#contact" class="btn btn-outline contact-btn">
                             <i class="fas fa-paper-plane"></i>
                             Get In Touch
                         </a>
@@ -938,9 +1019,7 @@
                 </div>
             </div>
             <div class="hero-image">
-                <!-- This would typically be an image -->
-                <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color)); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
-                    <!-- Placeholder for developer illustration -->
+                <div class="hero-image-placeholder">
                     <i class="fas fa-code" style="font-size: 8rem;"></i>
                 </div>
             </div>
@@ -957,9 +1036,7 @@
                 <h2 class="section-title">About Me</h2>
                 <div class="about-content">
                     <div class="about-image">
-                        <!-- This would typically be an image -->
-                        <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--secondary-color), var(--accent-color), var(--primary-color)); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
-                            <!-- Placeholder for profile image -->
+                        <div class="about-image-placeholder">
                             <i class="fas fa-user" style="font-size: 8rem;"></i>
                         </div>
                     </div>
@@ -1179,7 +1256,7 @@
         </footer>
 
         <!-- Back to Top Button -->
-        <a href="#" class="back-to-top">
+        <a href="#" class="back-to-top" id="backToTop">
             <i class="fas fa-arrow-up"></i>
         </a>
     </div>
@@ -1190,6 +1267,8 @@
         const learnMoreBtn = document.getElementById('learnMore');
         const landingPage = document.getElementById('landing');
         const portfolioContent = document.getElementById('portfolioContent');
+        const downArrow = document.getElementById('downArrow');
+        const backToTop = document.getElementById('backToTop');
         
         // Enter Portfolio Button
         enterPortfolioBtn.addEventListener('click', () => {
@@ -1207,6 +1286,52 @@
             setTimeout(() => {
                 document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
             }, 100);
+        });
+
+        // Down Arrow Functionality
+        downArrow.addEventListener('click', () => {
+            landingPage.style.display = 'none';
+            portfolioContent.style.display = 'block';
+            // Scroll to top of portfolio
+            setTimeout(() => {
+                document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
+
+        // Back to Top Functionality
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Fix for View My Work and Get In Touch buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix for View My Work button
+            const viewWorkBtn = document.querySelector('.view-work-btn');
+            if (viewWorkBtn) {
+                viewWorkBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('projects').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            }
+
+            // Fix for Get In Touch button
+            const getInTouchBtn = document.querySelector('.contact-btn');
+            if (getInTouchBtn) {
+                getInTouchBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('contact').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+            }
         });
 
         // Theme Toggle Functionality
@@ -1261,7 +1386,6 @@
         // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
-            const backToTop = document.querySelector('.back-to-top');
             
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
